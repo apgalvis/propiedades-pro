@@ -1,4 +1,4 @@
-import { Pause, Eye, Star, Crown, TrendingUp, Info } from "lucide-react";
+import { Pause, Eye, Star, TrendingUp, Info, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const levels = [
@@ -8,10 +8,10 @@ const levels = [
     icon: Pause,
     tagline: "Sin visibilidad",
     color: "bg-gray-200",
-    gradientColor: "from-gray-200 to-gray-300",
+    gradientColor: "from-gray-300 to-gray-400",
     iconBg: "bg-gray-100",
-    iconColor: "text-gray-400",
-    height: "h-28 md:h-36",
+    iconColor: "text-gray-500",
+    height: "h-20 md:h-28",
   },
   {
     id: "simple",
@@ -22,10 +22,10 @@ const levels = [
     gradientColor: "from-emerald-400 to-emerald-500",
     iconBg: "bg-emerald-100",
     iconColor: "text-emerald-600",
-    height: "h-40 md:h-52",
+    height: "h-32 md:h-44",
   },
   {
-    id: "featured",
+    id: "destacado",
     name: "Destacado",
     icon: Star,
     tagline: "Mayor alcance",
@@ -33,18 +33,22 @@ const levels = [
     gradientColor: "from-amber-400 to-orange-500",
     iconBg: "bg-amber-100",
     iconColor: "text-amber-600",
-    height: "h-56 md:h-72",
+    height: "h-44 md:h-60",
+    isPremium: true,
   },
   {
     id: "prime",
     name: "Prime",
-    icon: Crown,
+    icon: Sparkles,
     tagline: "Máxima exposición",
-    color: "bg-gradient-to-b from-blue-500 to-indigo-600",
-    gradientColor: "from-blue-500 to-indigo-600",
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-    height: "h-72 md:h-96",
+    subtitle: "Destacado mejorado",
+    color: "bg-gradient-to-b from-violet-500 to-purple-600",
+    gradientColor: "from-violet-500 to-purple-600",
+    iconBg: "bg-violet-100",
+    iconColor: "text-violet-600",
+    height: "h-56 md:h-80",
+    isPremium: true,
+    isTopTier: true,
   },
 ];
 
@@ -87,9 +91,22 @@ const VisibilityLevels = () => {
         </div>
 
         {/* Main Illustration */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative max-w-4xl mx-auto">
+          
+          {/* Exposure indicator */}
+          <div 
+            className={`flex justify-end mb-4 pr-4 transition-all duration-700 delay-300 ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            }`}
+          >
+            <div className="bg-primary text-primary-foreground text-[10px] md:text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+              <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
+              <span>Más exposición</span>
+            </div>
+          </div>
+
           {/* Columns Container */}
-          <div className="relative flex items-end justify-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 pb-8">
+          <div className="relative flex items-end justify-center gap-4 sm:gap-6 md:gap-10 pb-4">
             {levels.map((level, index) => (
               <div
                 key={level.id}
@@ -100,156 +117,147 @@ const VisibilityLevels = () => {
               >
                 {/* Column */}
                 <div 
-                  className={`relative w-16 sm:w-20 md:w-28 lg:w-32 ${level.height} rounded-2xl bg-gradient-to-b ${level.gradientColor} shadow-xl transition-all duration-500 flex flex-col items-center justify-start pt-4 md:pt-6 group hover:scale-105 hover:-translate-y-2`}
+                  className={`relative w-14 sm:w-18 md:w-24 lg:w-28 ${level.height} rounded-2xl bg-gradient-to-b ${level.gradientColor} shadow-xl transition-all duration-500 flex flex-col items-center justify-start pt-3 md:pt-5 group hover:scale-105 hover:-translate-y-1`}
                 >
                   {/* Glow for premium */}
-                  {(level.id === 'featured' || level.id === 'prime') && (
-                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-b ${level.gradientColor} blur-2xl opacity-30 -z-10 scale-110`} />
+                  {level.isPremium && (
+                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-b ${level.gradientColor} blur-2xl opacity-40 -z-10 scale-110`} />
                   )}
                   
                   {/* Icon container */}
                   <div 
-                    className={`w-10 h-10 md:w-14 md:h-14 rounded-xl ${level.iconBg} flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110`}
+                    className={`w-8 h-8 md:w-12 md:h-12 rounded-xl ${level.iconBg} flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110`}
                   >
-                    <level.icon className={`w-5 h-5 md:w-7 md:h-7 ${level.iconColor}`} />
+                    <level.icon className={`w-4 h-4 md:w-6 md:h-6 ${level.iconColor}`} />
                   </div>
 
-                  {/* Light rays for Prime */}
-                  {level.id === 'prime' && isVisible && (
+                  {/* Shine effect for Prime */}
+                  {level.isTopTier && isVisible && (
                     <>
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-1 h-4 bg-gradient-to-t from-blue-400 to-transparent rounded-full animate-pulse" />
-                      <div className="absolute -top-4 left-1/4 w-0.5 h-3 bg-gradient-to-t from-blue-300 to-transparent rounded-full animate-pulse" style={{ animationDelay: '200ms' }} />
-                      <div className="absolute -top-4 right-1/4 w-0.5 h-3 bg-gradient-to-t from-blue-300 to-transparent rounded-full animate-pulse" style={{ animationDelay: '400ms' }} />
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-1 h-3 bg-gradient-to-t from-violet-400 to-transparent rounded-full animate-pulse" />
+                      <div className="absolute -top-3 left-1/3 w-0.5 h-2 bg-gradient-to-t from-violet-300 to-transparent rounded-full animate-pulse" style={{ animationDelay: '200ms' }} />
+                      <div className="absolute -top-3 right-1/3 w-0.5 h-2 bg-gradient-to-t from-violet-300 to-transparent rounded-full animate-pulse" style={{ animationDelay: '400ms' }} />
                     </>
                   )}
                 </div>
 
                 {/* Label */}
-                <div className="mt-3 md:mt-4 text-center">
-                  <h3 className="text-xs sm:text-sm md:text-base font-bold text-foreground">
+                <div className="mt-2 md:mt-3 text-center max-w-[70px] md:max-w-[100px]">
+                  <h3 className="text-[10px] sm:text-xs md:text-sm font-bold text-foreground leading-tight">
                     {level.name}
                   </h3>
-                  <p className="text-[9px] sm:text-[10px] md:text-xs text-muted-foreground mt-0.5">
+                  <p className="text-[8px] sm:text-[9px] md:text-[11px] text-muted-foreground mt-0.5 leading-tight">
                     {level.tagline}
                   </p>
                   
+                  {/* Subtitle for Prime */}
+                  {level.isTopTier && (
+                    <p className="text-[7px] sm:text-[8px] md:text-[9px] text-violet-500 mt-0.5 italic">
+                      Destacado mejorado
+                    </p>
+                  )}
+                  
                   {/* Additional info for Pausado */}
                   {level.id === 'paused' && (
-                    <div className="mt-2 text-[8px] sm:text-[9px] md:text-[10px] text-muted-foreground/80">
-                      <p>No visible · Editable · Reactivación automática</p>
+                    <div className="mt-1 text-[7px] sm:text-[8px] text-muted-foreground/70 hidden sm:block">
+                      <p>No visible · Editable</p>
                     </div>
                   )}
                 </div>
               </div>
             ))}
-
-            {/* Exposure badge */}
-            <div 
-              className={`absolute top-0 right-0 md:right-4 lg:right-8 transition-all duration-1000 delay-700 ${
-                isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-              }`}
-            >
-              <div className="bg-primary text-primary-foreground text-[10px] md:text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
-                <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
-                <span>Más exposición</span>
-              </div>
-            </div>
           </div>
 
-          {/* Plan Arrows Section */}
+          {/* Plan Coverage Brackets */}
           <div 
-            className={`relative mt-6 md:mt-10 transition-all duration-700 delay-500 ${
+            className={`relative mt-8 md:mt-12 transition-all duration-700 delay-500 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            {/* SVG Arrows */}
-            <svg 
-              className="w-full h-32 md:h-40" 
-              viewBox="0 0 400 100" 
-              preserveAspectRatio="xMidYMid meet"
-            >
-              {/* Plan Gratis Arrow - covers Pausado & Anuncio Simple */}
-              <g className={`transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ transitionDelay: '600ms' }}>
-                <path
-                  d="M 30 25 Q 80 60 145 25"
-                  fill="none"
-                  stroke="#10b981"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  markerEnd="url(#arrowGreen)"
-                />
-                <text x="50" y="55" fill="#10b981" fontSize="10" fontWeight="600">Plan Gratis</text>
-              </g>
+            {/* Grid container for brackets */}
+            <div className="grid grid-cols-4 gap-4 sm:gap-6 md:gap-10 max-w-[280px] sm:max-w-[360px] md:max-w-[480px] lg:max-w-[560px] mx-auto">
+              
+              {/* Plan Gratis - spans first 2 columns */}
+              <div className="col-span-2 relative">
+                <div className="h-1 bg-emerald-400 rounded-full" />
+                <div className="absolute left-0 top-0 w-1 h-3 bg-emerald-400 rounded-b-full" />
+                <div className="absolute right-0 top-0 w-1 h-3 bg-emerald-400 rounded-b-full" />
+                <div className="text-center mt-4">
+                  <span className="inline-block bg-emerald-500 text-white text-[9px] sm:text-[10px] md:text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap">
+                    Plan Gratis
+                  </span>
+                </div>
+              </div>
+              
+              {/* Spacer for alignment */}
+              <div className="col-span-2" />
+            </div>
 
-              {/* Plan Pro Arrow - covers up to Destacado */}
-              <g className={`transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ transitionDelay: '800ms' }}>
-                <path
-                  d="M 30 50 Q 140 90 245 25"
-                  fill="none"
-                  stroke="#f97316"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  markerEnd="url(#arrowOrange)"
-                />
-                <text x="100" y="82" fill="#f97316" fontSize="10" fontWeight="600">Plan Pro</text>
-              </g>
+            {/* Plan Pro - spans first 3 columns */}
+            <div className="grid grid-cols-4 gap-4 sm:gap-6 md:gap-10 max-w-[280px] sm:max-w-[360px] md:max-w-[480px] lg:max-w-[560px] mx-auto mt-4">
+              <div className="col-span-3 relative">
+                <div className="h-1 bg-amber-500 rounded-full" />
+                <div className="absolute left-0 top-0 w-1 h-3 bg-amber-500 rounded-b-full" />
+                <div className="absolute right-0 top-0 w-1 h-3 bg-amber-500 rounded-b-full" />
+                <div className="text-center mt-4">
+                  <span className="inline-block bg-amber-500 text-white text-[9px] sm:text-[10px] md:text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap">
+                    Plan Pro
+                  </span>
+                </div>
+              </div>
+              
+              {/* Spacer */}
+              <div className="col-span-1" />
+            </div>
 
-              {/* Plan Premium Arrow - covers all including Prime */}
-              <g className={`transition-all duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ transitionDelay: '1000ms' }}>
-                <path
-                  d="M 30 75 Q 200 110 345 25"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  markerEnd="url(#arrowBlue)"
-                />
-                <text x="160" y="105" fill="#3b82f6" fontSize="10" fontWeight="600">Plan Premium</text>
-              </g>
-
-              {/* Arrow markers */}
-              <defs>
-                <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
-                </marker>
-                <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0,0 L0,6 L9,3 z" fill="#f97316" />
-                </marker>
-                <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                  <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6" />
-                </marker>
-              </defs>
-            </svg>
-          </div>
-
-          {/* Pausado Note */}
-          <div 
-            className={`mt-6 md:mt-8 max-w-md mx-auto transition-all duration-700 delay-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-          >
-            <div className="flex items-start gap-2 bg-muted/50 rounded-lg p-3 md:p-4 border border-border/50">
-              <Info className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-              <div className="text-[10px] sm:text-xs text-muted-foreground">
-                <p className="font-medium text-foreground/80 mb-1">Sobre el estado Pausado:</p>
-                <p>Este estado puede ser temporal (hasta 30 días) o activado manualmente por el usuario. Al finalizar el periodo, el anuncio se reactiva automáticamente.</p>
+            {/* Plan Pro + Destacados - spans all 4 columns */}
+            <div className="grid grid-cols-4 gap-4 sm:gap-6 md:gap-10 max-w-[280px] sm:max-w-[360px] md:max-w-[480px] lg:max-w-[560px] mx-auto mt-4">
+              <div className="col-span-4 relative">
+                <div className="h-1 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full" />
+                <div className="absolute left-0 top-0 w-1 h-3 bg-violet-500 rounded-b-full" />
+                <div className="absolute right-0 top-0 w-1 h-3 bg-purple-600 rounded-b-full" />
+                <div className="text-center mt-4">
+                  <span className="inline-block bg-gradient-to-r from-violet-500 to-purple-600 text-white text-[9px] sm:text-[10px] md:text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap">
+                    Plan Pro + Destacados
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Legend */}
           <div 
-            className={`flex flex-wrap justify-center gap-4 md:gap-8 mt-8 md:mt-10 transition-all duration-700 delay-1000 ${
+            className={`flex flex-wrap justify-center gap-6 md:gap-10 mt-10 md:mt-14 transition-all duration-700 delay-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
+              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-gray-400 to-emerald-500" />
               <span className="text-xs md:text-sm text-muted-foreground">Niveles básicos</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-blue-600" />
+              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-violet-600" />
               <span className="text-xs md:text-sm text-muted-foreground">Niveles premium</span>
+            </div>
+          </div>
+
+          {/* Pausado Note */}
+          <div 
+            className={`mt-10 md:mt-14 max-w-lg mx-auto transition-all duration-700 delay-800 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+          >
+            <div className="flex items-start gap-3 bg-muted/50 rounded-xl p-4 md:p-5 border border-border/50">
+              <div className="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
+                <Pause className="w-4 h-4 text-gray-500" />
+              </div>
+              <div className="text-xs md:text-sm text-muted-foreground">
+                <p className="font-semibold text-foreground mb-1">Sobre el estado Pausado</p>
+                <p className="leading-relaxed">
+                  Este estado puede ser temporal (hasta 30 días) o activado manualmente por el usuario. 
+                  Al finalizar el periodo, el anuncio se reactiva automáticamente.
+                </p>
+              </div>
             </div>
           </div>
         </div>
