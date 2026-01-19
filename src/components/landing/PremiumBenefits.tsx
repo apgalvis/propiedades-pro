@@ -8,12 +8,12 @@ interface PremiumBenefitsProps {
 }
 
 const benefits = [
-  { icon: Infinity, title: "Leads ilimitados", description: "Sin tope de contactos mensuales" },
-  { icon: Eye, title: "Visibilidad 24/7", description: "Sin pausas ni interrupciones" },
-  { icon: Trophy, title: "Destacados y Prime", description: "Máxima exposición en búsquedas" },
-  { icon: Smartphone, title: "WhatsApp ilimitado", description: "Leads directo a tu celular" },
-  { icon: BarChart3, title: "Métricas avanzadas", description: "Analytics detallados de rendimiento" },
-  { icon: Headphones, title: "Soporte prioritario", description: "Atención preferencial" },
+  { icon: Infinity, title: "Contactos sin tope mensual", description: "Sin límite mensual de recepción por visibilidad activa." },
+  { icon: Eye, title: "Visibilidad continua", description: "Tu anuncio permanece activo sin pausas ni interrupciones." },
+  { icon: Trophy, title: "Destacados incluidos", description: "Prioridad visual adicional en resultados de búsqueda." },
+  { icon: Smartphone, title: "Contacto por WhatsApp sin tope", description: "Recepción continua de contactos por WhatsApp.", isGift: true },
+  { icon: BarChart3, title: "Métricas avanzadas", description: "Indicadores de visibilidad y rendimiento del anuncio." },
+  { icon: Headphones, title: "Soporte prioritario", description: "Atención preferencial para cuentas ProMax." },
 ];
 
 const SectionWrapper = styled.section`
@@ -117,11 +117,27 @@ const BenefitIconWrapper = styled.div`
   margin-bottom: 0.75rem;
 `;
 
+const BenefitTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.125rem;
+`;
+
 const BenefitTitle = styled.h3`
   font-size: 0.875rem;
   font-weight: 600;
   color: white;
-  margin-bottom: 0.125rem;
+`;
+
+const GiftBadge = styled.span`
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #064e3b;
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.125rem 0.375rem;
+  border-radius: 9999px;
 `;
 
 const BenefitDescription = styled.p`
@@ -272,10 +288,10 @@ const PremiumBenefits = ({ cartUrl, whatsappUrl }: PremiumBenefitsProps) => {
       <Container>
         <Header>
           <Title>
-            Desbloquea tu <GradientText>potencial</GradientText>
+            Desbloquea <GradientText>máxima exposición</GradientText>
           </Title>
           <Subtitle>
-            Con Premium, tu negocio inmobiliario alcanza otro nivel de resultados
+            Con ProMax, tu anuncio accede al nivel más alto de visibilidad disponible
           </Subtitle>
         </Header>
 
@@ -285,7 +301,10 @@ const PremiumBenefits = ({ cartUrl, whatsappUrl }: PremiumBenefitsProps) => {
               <BenefitIconWrapper>
                 <benefit.icon size={20} color="#6ee7b7" />
               </BenefitIconWrapper>
-              <BenefitTitle>{benefit.title}</BenefitTitle>
+              <BenefitTitleWrapper>
+                <BenefitTitle>{benefit.title}</BenefitTitle>
+                {'isGift' in benefit && benefit.isGift && <GiftBadge>🎁 Regalo</GiftBadge>}
+              </BenefitTitleWrapper>
               <BenefitDescription>{benefit.description}</BenefitDescription>
             </BenefitCard>
           ))}
