@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Eye, TrendingUp, Zap } from "lucide-react";
+import { Eye, TrendingUp } from "lucide-react";
 
 const SectionWrapper = styled.section`
   padding: 4rem 0;
@@ -150,19 +150,6 @@ const Description = styled.p`
   color: #4b5563;
   font-size: 1rem;
   line-height: 1.6;
-  margin-bottom: 1rem;
-`;
-
-const Badge = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #ecfdf5;
-  color: #047857;
-  padding: 0.625rem 1.25rem;
-  border-radius: 9999px;
-  font-size: 0.9375rem;
-  font-weight: 500;
 `;
 
 const VisibilityCallout = () => {
